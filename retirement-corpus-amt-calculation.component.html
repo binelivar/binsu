@@ -1,0 +1,69 @@
+<div class="container">
+    <form [formGroup]="form" class="normal-form" (ngSubmit)="onSubmit()">
+        
+        <mat-grid-list cols="2" rowHeight="300px" class="list-tyle">
+        <div class="heading-style">
+            <span>Retirement Corpus Amount</span>
+        </div>
+          <mat-grid-tile class="grid-tyle">
+            <div class="controles-container-1">
+                <mat-form-field>
+                    <input formControlName="retirementExpense" matInput placeholder="Expense at Retirement(Rs.)" readonly>
+                </mat-form-field>
+                <span class="slider-label"><mat-label>Life Expectancy(yrs)*</mat-label></span>
+                <span class="slider-input"><mat-label>{{ lifeExpectancy }}</mat-label></span>
+                <span>
+                <mat-slider 
+                #matslider
+                thumbLabel
+                formControlName="lifeExpectancy"
+                [(ngModel)]="lifeExpectancy"
+                (input)="getLifeExpectancy($event)"
+                tickInterval="1"
+                min="40"
+                max="200">
+                </mat-slider>
+                </span>
+                <mat-form-field>
+                    <input formControlName="yrsAfterRetirement" matInput placeholder="Number of Years After Retirement(Yrs.)" readonly>
+                </mat-form-field>
+            </div>
+          </mat-grid-tile>
+                <mat-grid-tile class="grid-tyle">
+                    <div class="controles-container-1">
+                <mat-form-field>
+                    <mat-select placeholder="Rate of Return" formControlName="rateOfReturn">
+                        <mat-option *ngFor="let rateOfReturn of rateOfReturns.rateOfReturn" [value]="rateOfReturn.ROR">{{ rateOfReturn.ROR }}</mat-option>
+                    </mat-select>
+                    <mat-error>This field is mandatory.</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="inflationAdjustedReturn" matInput placeholder="Inflated Adjusted Return(%)" readonly>
+                </mat-form-field>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Calculate</button>
+                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+                </div> 
+            </div>
+            </mat-grid-tile>
+        <div *ngIf="isSubmit" class="result-style">
+            <span>Calculated Retirement Corpus Amount: Rs.{{ retirementCorpusAmt }}</span>
+        </div>
+        <!-- <div *ngIf="isSubmit">
+            <a routerLink="/monthlyInvestments" routerLinkActive="active" class="my-1">
+           <img src="assets/Images/arrow.png">
+            </a>
+        </div> -->
+        <div>
+            <a routerLink='/expense' routerLinkActive="active" class="mat-anim">
+                <mat-icon>arrow_back</mat-icon>
+            </a>
+        </div>
+        <div *ngIf="isSubmit">
+            <a routerLink='/monthlyInvestments' routerLinkActive="active" class="mat-anim" style="float:right;">
+                <mat-icon>arrow_forward</mat-icon>
+            </a>
+        </div>
+        </mat-grid-list>
+    </form>
+    </div>

@@ -1,0 +1,79 @@
+<div class="container">
+<form [formGroup]="form" class="normal-form" (ngSubmit)="onSubmit()">
+    
+    <mat-grid-list cols="2" rowHeight="300px" class="list-tyle">
+    <div class="heading-style">
+        <span>Retirement Expense</span>
+    </div>
+      <mat-grid-tile class="grid-tyle">
+        <div class="controles-container-1">
+            <mat-form-field>
+                <input formControlName="monthlyExpense" matInput placeholder="Current Monthly Expenses(Rs.)*">
+                <mat-error *ngIf="form.controls['monthlyExpense'].errors?.required">This field is mandatory.</mat-error>
+                <mat-error *ngIf="form.controls['monthlyExpense'].errors?.pattern">Must contain only numbers.</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input formControlName="annualExpense" matInput placeholder="Current Annual Expenses(Rs.)" readonly>
+            </mat-form-field>
+            <mat-form-field>
+                <input formControlName="annualInflationRate" matInput placeholder="Annual Inflation Rate(%)*">
+                <mat-error *ngIf="form.controls['annualInflationRate'].errors?.required">This field is mandatory.</mat-error>
+                <mat-error *ngIf="form.controls['annualInflationRate'].errors?.pattern">Must contain only numbers.</mat-error>
+            </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="grid-tyle">
+        <div class="controles-container-2">
+            <span class="slider-label"><mat-label>Current Age(yrs)*</mat-label></span>
+            <span class="slider-input"><mat-label>{{ age }}</mat-label></span>
+            <span>
+            <mat-slider 
+            #matslider
+            thumbLabel
+            [(ngModel)]="age"
+            formControlName="currentAge"
+            (input)="getAge($event)"
+            tickInterval="1"
+            min="15"
+            max="150">
+            </mat-slider>
+        </span>
+            <span class="slider-label"><mat-label>Expected Retirement Age(yrs)*</mat-label></span>
+            <span class="slider-input"><mat-label>{{ retirementAge }}</mat-label></span>
+            <span>
+            <mat-slider 
+            #matslider
+            thumbLabel
+            [(ngModel)]="retirementAge"
+            formControlName="expectedRetirementAge"
+            (input)="getRetirementAge($event)"
+            tickInterval="1"
+            min="40"
+            max="200">
+            </mat-slider>
+        </span>
+        <mat-form-field>
+            <input formControlName="yearsToRetirement" matInput placeholder="Years to Retirement(yrs)" readonly>
+        </mat-form-field>
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Calculate</button>
+                <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+            </div>  
+        </div>
+       
+    </mat-grid-tile>
+ 
+    <div *ngIf="isSubmit" class="result-style">
+        <span>Calculated Retirement Expense: Rs.{{ expenseAtRetirement }}</span>
+    </div>
+    <div *ngIf="isSubmit">
+        <a routerLink='/retirementCorpus' routerLinkActive="active" class="mat-anim">
+        <!-- <a routerLink="/retirementCorpus" routerLinkActive="active" class="my-1"> -->
+       <!-- <img src="assets/Images/arrow.png"> -->
+       <mat-icon>arrow_forward</mat-icon>
+        <!-- </a> -->
+        </a>
+    </div>
+    </mat-grid-list>
+</form>
+</div>
